@@ -1,0 +1,136 @@
+Test 1
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/32.snek
+32
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/32.s
+cargo run -- test/32.snek test/32.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/adder test/32.snek test/32.s`
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/32.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+        mov rax, 32
+        ret
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/32.run
+nasm -f elf64 test/32.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/32.run
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ ./test/32.run 
+32
+
+Test 2
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/sub3.snek 
+(sub1 (sub1 (sub1 13)))
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/sub3.s
+cargo run -- test/sub3.snek test/sub3.s
+   Compiling adder v0.1.0 (/workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.24s
+     Running `target/debug/adder test/sub3.snek test/sub3.s`
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/sub3.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+        mov rax, 13
+        sub rax, 1
+        sub rax, 1
+        sub rax, 1
+        ret
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/sub3.run 
+nasm -f elf64 test/sub3.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/sub3.run
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ ./test/sub3.run 
+10
+
+Test 3
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/addsub.snek 
+(add1 (sub1 9))
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/addsub.s
+cargo run -- test/addsub.snek test/addsub.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/addsub.snek test/addsub.s`
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/addsub.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+        mov rax, 9
+        sub rax, 1
+        add rax, 1
+        ret
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/addsub.run
+nasm -f elf64 test/addsub.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/addsub.run
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ ./test/addsub.run 
+9
+
+Test4
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/neg.snek
+(negate 12)
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/neg.s
+cargo run -- test/neg.snek test/neg.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/neg.snek test/neg.s`
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/neg.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+        mov rax, 12
+        neg rax
+        ret
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/neg.run
+nasm -f elf64 test/neg.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/neg.run
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ ./test/neg.run
+-12
+
+Test 5
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/addsubneg.snek 
+(negate(add1(sub1(sub1(negate 9)))))
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/addsubneg.s
+cargo run -- test/addsubneg.snek test/addsubneg.s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/addsubneg.snek test/addsubneg.s`
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ cat test/addsubneg.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+        mov rax, 9
+        neg rax
+        sub rax, 1
+        sub rax, 1
+        add rax, 1
+        neg rax
+        ret
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ make test/addsubneg.run
+nasm -f elf64 test/addsubneg.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/addsubneg.run
+
+@yjl450 ➜ /workspaces/ucsd-cse231-sp24-01-adder-yjl450/adder (main) $ ./test/addsubneg.run 
+10

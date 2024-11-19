@@ -1,0 +1,15 @@
+(fun (pt x y)
+     (vec x y))
+
+(fun (pt_add p1 p2)
+     (vec (+ (vec-get p1 0) (vec-get p2 0)) (+ (vec-get p1 1) (vec-get p2 1))))
+
+(let ((p1 (pt 1 2)) (p2 (pt -1 -2)) (p3 (pt 12 16)))
+  (block
+   (print p1)
+   (print p2)
+   (print p3)
+   (print (pt_add p1 p2))
+   (print (pt_add p1 p3))
+   )
+  )
